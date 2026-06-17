@@ -1,0 +1,19 @@
+[project]
+name = "quiz-platform"
+version = "0.1.0"
+description = "Interactive AI/ML quiz platform with coding practice, rubric grading, semantic evaluation, and progress tracking."
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "pandas>=2.3.0",
+    "pydantic>=2.11.0",
+    "sentence-transformers>=4.1.0",
+    "sqlalchemy>=2.0.0",
+    "streamlit>=1.45.0",
+    "streamlit-ace>=0.1.1",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.4.0",
+]
