@@ -81,3 +81,87 @@
    ```
 
    Installs the dependencies declared in `pyproject.toml`, creates or updates `uv.lock`, and synchronizes the `.venv` environment.
+
+9. Create the industry-grade project scaffold.
+
+   ```bash
+   mkdir -p \
+     frontend/streamlit_app/{pages,components,state,utils} \
+     frontend/web/src/{app,pages,api,hooks,lib,styles} \
+     frontend/web/src/components/{ui,layout,charts} \
+     frontend/web/src/features/{quiz,code_runner,grading,progress} \
+     backend/app/{core,models,schemas,services,repositories,evaluators,code_runner,db,workers} \
+     backend/app/api/routes \
+     backend/tests \
+     backend/alembic \
+     data/{questions,seed,samples} \
+     infra/{docker,compose,nginx} \
+     scripts
+   ```
+
+   Creates separate areas for the Streamlit prototype, future React frontend, FastAPI backend, database migrations, question data, Docker/Compose infrastructure, and helper scripts.
+
+   Note: this project uses `frontend/` instead of `apps/` because it reads more clearly beside `backend/`.
+
+10. Create Docker and Docker Compose placeholders.
+
+   ```bash
+   touch \
+     infra/docker/backend.Dockerfile \
+     infra/docker/streamlit.Dockerfile \
+     infra/docker/web.Dockerfile \
+     infra/docker/worker.Dockerfile \
+     infra/compose/docker-compose.dev.yml \
+     infra/compose/docker-compose.prod.yml
+   ```
+
+   Prepares separate Dockerfiles for backend, Streamlit, React frontend, and worker services, plus separate Compose files for development and production-like environments.
+
+11. Move Python application code into `src/quiz_platform/`.
+
+   ```bash
+   mkdir -p src/quiz_platform tests migrations
+   mv frontend/streamlit_app src/quiz_platform/streamlit_app
+   mv backend/app src/quiz_platform/backend
+   mv backend/tests tests/backend
+   mv backend/alembic migrations/alembic
+   rmdir backend
+   ```
+
+   Makes backend and Streamlit code part of the importable `quiz_platform` Python package while keeping React, data, infrastructure, scripts, and documentation outside the package.
+
+12. Make the project installable as a Python package.
+
+   ```toml
+   [build-system]
+   requires = ["hatchling"]
+   build-backend = "hatchling.build"
+
+   [tool.uv]
+   package = true
+
+   [tool.hatch.build.targets.wheel]
+   packages = ["src/quiz_platform"]
+   ```
+
+   Configures the project so `uv sync` installs `quiz_platform` into the virtual environment, giving clean imports from tests, scripts, and notebooks.
+
+13. Re-sync and verify package imports.
+
+   ```bash
+   uv sync
+   uv run python -c "print(__import__('quiz_platform').__name__)"
+   uv run python -c "print(__import__('quiz_platform.backend').backend.__name__)"
+   uv run python -c "print(__import__('quiz_platform.streamlit_app').streamlit_app.__name__)"
+   ```
+
+   Rebuilds the local package and confirms that `quiz_platform`, `quiz_platform.backend`, and `quiz_platform.streamlit_app` can be imported cleanly.
+
+14. Add repository hygiene files.
+
+   ```bash
+   touch .env.example
+   find . -type d -empty -not -path "./.git/*" -not -path "./.venv/*" -exec touch "{}/.gitkeep" \;
+   ```
+
+   Keeps empty scaffold folders trackable with `.gitkeep`, tracks a safe `.env.example` template, and ignores local files that should not be pushed, such as `.env`, `.venv`, caches, logs, local databases, notebook checkpoints, frontend build outputs, and editor files.

@@ -1,0 +1,2 @@
+# Placeholder for production-like services.
+# Expected services: backend, web, postgres, redis, worker, nginx.

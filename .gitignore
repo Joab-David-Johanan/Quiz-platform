@@ -1,10 +1,73 @@
-# Python-generated files
+# Python bytecode and caches
 __pycache__/
-*.py[oc]
+*.py[cod]
+*$py.class
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.pyre/
+.coverage
+coverage.xml
+htmlcov/
+
+# Python build artifacts
 build/
 dist/
 wheels/
-*.egg-info
+*.egg-info/
 
 # Virtual environments
-.venv
+.venv/
+venv/
+env/
+
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+*.local
+.streamlit/secrets.toml
+
+# Local databases and generated runtime state
+*.db
+*.sqlite
+*.sqlite3
+*.db-shm
+*.db-wal
+
+# Logs
+*.log
+logs/
+
+# Notebooks
+.ipynb_checkpoints/
+
+# Node / React frontend artifacts
+node_modules/
+frontend/web/node_modules/
+frontend/web/dist/
+frontend/web/build/
+frontend/web/.vite/
+frontend/web/.turbo/
+frontend/web/coverage/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Docker and local compose overrides
+docker-compose.override.yml
+infra/compose/docker-compose.override.yml
+
+# Model and data caches
+.cache/
+cache/
+model_cache/
+artifacts/
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+Desktop.ini
+.vscode/
+.idea/

@@ -1,0 +1,2 @@
+# Placeholder for local development services.
+# Expected services: backend, web, streamlit, postgres, redis, worker, code-runner.
